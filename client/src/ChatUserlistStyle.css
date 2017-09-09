@@ -1,0 +1,20 @@
+.chatUserlist {
+    float: left;
+    width: 20%;
+    min-height: 85%;
+    height: 85%;
+    border-radius: 12px;
+    background: #f2f2f2;
+}
+
+.chatUserlist__title {
+    color: #aaddaa;
+    font-weight: bold;
+    font-size: calc(14px + 1.2vh);
+}
+
+.chatUserlist__content {
+    text-align: center;
+    overflow-y: scroll;
+    height: 88%;
+}

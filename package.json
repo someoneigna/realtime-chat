@@ -1,0 +1,22 @@
+{
+  "name": "realtime-chat",
+  "version": "1.0.0",
+  "description": "A NodeJS socket.io server and ReactJS client.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+	"start": "concurrently \"npm run server && npm run client\"",
+	"server": "nodemon index.js",
+	"client": "cd client && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ignacio Alvarez",
+  "license": "ISC"
+}

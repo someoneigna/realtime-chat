@@ -1,0 +1,39 @@
+.chatLog {    
+    float: right;
+    width: 80%;
+    min-height: 333px;
+    margin-top: 8px;    
+    height: 85%;
+    border-radius: 12px;
+    background: #f2f2f2;
+}
+
+.chatLog ul {
+    list-style: none;
+    height: 100%;
+    margin: 0em;
+    overflow: scroll;
+}
+
+.chatLog li {
+    width: 95%;
+    height: .5em;
+    text-align: left;
+    margin-left: 30px;
+    background: transparent;
+}
+
+.message {
+    display: inline-block;
+}
+
+.username {
+    display: inline;
+    margin-right: .5em;
+    font-family: 'Verdana';
+    font-size: 1.2vw;
+}
+
+.messageText {
+    display: inline;
+}
