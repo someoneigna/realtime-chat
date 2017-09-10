@@ -7,6 +7,9 @@ export default class ChatLog extends React.Component {
         this.state = { messages: [] }
 
         props.socket.on('message', (message) => {
+            if (this.props.notifications && document.hidden) {
+                const notification = new Notification(`${message.username} says`, { body: message.text });
+            }
             this.addMessage(message)
         })
     }

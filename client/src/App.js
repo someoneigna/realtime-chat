@@ -7,6 +7,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
+    
+    Notification.requestPermission()
+    .then(result => this.setState({ notifications: result }));
   }
 
   getInitialState() {
@@ -46,7 +49,7 @@ class App extends Component {
         </form>
 
           <section className="chatSection">
-            <ChatContainer isVisible={this.state.chatVisible} username={this.state.username} />
+            <ChatContainer isVisible={this.state.chatVisible} username={this.state.username} notificationsEnabled={this.state.notifications} />
           </section>
       </div>
     );

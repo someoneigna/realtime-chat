@@ -37,7 +37,7 @@ export default class ChatContainer extends React.Component {
 
         return(
             <div style={visibility} className="chatContainer">                
-                <ChatLog className="chatLog" socket={this.socket} />
+                <ChatLog className="chatLog" socket={this.socket} notifications={this.props.notificationsEnabled} />
                 <ChatUserlist className="chatUserlist" socket={this.socket} users={this.state.users} />
                 <ChatInput className="chatInput" sendMessage={this.sendMessage} />            
             </div>
