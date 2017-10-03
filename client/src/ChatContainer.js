@@ -4,6 +4,7 @@ import ChatLog from './ChatLog.js';
 import ChatUserlist from './ChatUserlist.js';
 import './ChatContainerStyle.css';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 export default class ChatContainer extends React.Component {
     constructor(props) {
@@ -11,7 +12,7 @@ export default class ChatContainer extends React.Component {
         this.socket = io();
         this.socket.on('users_status', (users) => {
             this.setState({ users: users });
-        });
+        });        
 
         this.state = { username: undefined, users: [] };
     }
@@ -30,6 +31,16 @@ export default class ChatContainer extends React.Component {
         }
     }
 
+    onUploadFile = (file) => {
+        axios.post('/upload', file, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+        .then()
+        .catch(err => console.log('Error uploading file. ' + err))
+    }
+
     render() {        
         const visibility = {
             visibility: (this.props.isVisible ? 'visible': 'hidden')
@@ -39,7 +50,7 @@ export default class ChatContainer extends React.Component {
             <div style={visibility} className="chatContainer">                
                 <ChatLog className="chatLog" socket={this.socket} notifications={this.props.notificationsEnabled} />
                 <ChatUserlist className="chatUserlist" socket={this.socket} users={this.state.users} />
-                <ChatInput className="chatInput" sendMessage={this.sendMessage} />            
+                <ChatInput className="chatInput" sendMessage={this.sendMessage} onUpload={this.onUploadFile} />            
             </div>
         );
     }

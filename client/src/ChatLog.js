@@ -1,5 +1,6 @@
 import React from 'react';
 import './ChatLogStyle.css';
+import FileMessage from './FileMessage.js';
 
 export default class ChatLog extends React.Component {
     constructor(props) {
@@ -11,7 +12,11 @@ export default class ChatLog extends React.Component {
                 const notification = new Notification(`${message.username} says`, { body: message.text });
             }
             this.addMessage(message)
-        })
+        });
+
+        props.socket.on('file_upload', (file) => {
+            this.addMessage({ type:'file', url: file.url, name:file.name });
+        });
     }
 
     addMessage = (message) => {
@@ -21,6 +26,14 @@ export default class ChatLog extends React.Component {
 
     renderMessages = () => {
         return this.state.messages.map((m, i) => {
+            if (m.type === 'file') {
+                return (
+                    <li className="message" key={i}>
+                        <FileMessage url={m.url} name={m.name} />
+                    </li>
+                )
+            }
+            
             return (
                 <li className="message" key={i}>
                     <p className="username"><em>{m.username}</em></p>
