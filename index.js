@@ -4,6 +4,20 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const bodyparser = require('body-parser');
 
+const redis = require('redis');
+const redisClient = redis.createClient();
+
+const MESSAGE_BUFFER_KEY = 'messages';
+let message_buffer = [];
+
+// Insert Empty message buffer if no list initialized.
+redisClient.get(MESSAGE_BUFFER_KEY, (err, reply) => {
+    if (reply) { 
+        const result = JSON.parse(reply);
+        message_buffer = result;
+    }
+});
+
 const path = require('path');
 const multer = require('multer');
 
@@ -119,6 +133,10 @@ io.on('connection', function(socket) {
         console.log(`User connected:${socket.username}`);
         users.push(nickname);        
         io.emit('users_status', users);
+                
+        for (let i = 0; i < message_buffer.length; i++) {
+            io.emit('message', message_buffer[i]);
+        }
     });
 
     socket.on('disconnect', function() {
@@ -128,7 +146,15 @@ io.on('connection', function(socket) {
     });
 
     socket.on('message', function(message) {
-        io.emit('message', { username: socket.username, text: message });
+        const value = { username: socket.username, text: message }
+        io.emit('message', value);
+        message_buffer.push(value);
+        if (message_buffer.length >= 10) {
+            message_buffer = message_buffer.slice(-10, message_buffer.length);
+        }
+        redisClient.set(MESSAGE_BUFFER_KEY, JSON.stringify(message_buffer), (err, confirmation) => {
+            console.log('Saved backlog:' + confirmation);
+        });
         console.log(`${socket.username}: ${JSON.stringify(message)}`);
     })    
 });
